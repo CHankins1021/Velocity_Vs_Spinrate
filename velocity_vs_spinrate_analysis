@@ -1,0 +1,55 @@
+# Import libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
+
+# Load datasets
+fastest = pd.read_csv('Fastest_Pitches.csv')
+highest_spin = pd.read_csv('Highest_Spinrate.csv')
+
+# Basic cleaning: Drop rows where swings or bip are zero to avoid division errors
+fastest = fastest[(fastest['swings'] > 0) & (fastest['bip'] > 0)]
+highest_spin = highest_spin[(highest_spin['swings'] > 0) & (highest_spin['bip'] > 0)]
+
+# Calculate metrics for Fastest Pitches
+fastest_whiff_rate = fastest['whiffs'].sum() / fastest['swings'].sum()
+fastest_hit_rate = fastest['hits'].sum() / fastest['bip'].sum()
+
+# Calculate metrics for Highest Spinrate Pitches
+highest_spin_whiff_rate = highest_spin['whiffs'].sum() / highest_spin['swings'].sum()
+highest_spin_hit_rate = highest_spin['hits'].sum() / highest_spin['bip'].sum()
+
+# Print results
+print(f"Fastest Pitches - Whiff Rate: {fastest_whiff_rate:.2%}, Hit Rate: {fastest_hit_rate:.2%}")
+print(f"Highest Spinrate Pitches - Whiff Rate: {highest_spin_whiff_rate:.2%}, Hit Rate: {highest_spin_hit_rate:.2%}")
+
+# Create a summary DataFrame
+summary = pd.DataFrame({
+    'Category': ['Fastest Pitches', 'Highest Spinrate Pitches'],
+    'Whiff Rate': [fastest_whiff_rate, highest_spin_whiff_rate],
+    'Hit Rate': [fastest_hit_rate, highest_spin_hit_rate]
+})
+
+# Plot Whiff Rate Comparison
+plt.figure(figsize=(8,6))
+plt.bar(summary['Category'], summary['Whiff Rate'])
+plt.title('Whiff Rate Comparison')
+plt.ylabel('Whiff Rate')
+plt.ylim(0, 1)
+plt.grid(axis='y')
+plt.show()
+
+# Plot Hit Rate Comparison
+plt.figure(figsize=(8,6))
+plt.bar(summary['Category'], summary['Hit Rate'])
+plt.title('Hit Rate Comparison')
+plt.ylabel('Hit Rate')
+plt.ylim(0, 1)
+plt.grid(axis='y')
+plt.show()
+
+# Save summary to CSV
+summary.to_csv('velocity_vs_spinrate_summary.csv', index=False)
+
+print("Summary table saved as velocity_vs_spinrate_summary.csv")
+
