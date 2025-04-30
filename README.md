@@ -1,7 +1,7 @@
 # Velocity_Vs_Spinrate
 Project Overview
 
-This project analyzes two different groups of MLB pitches to determine which is more effective at generating whiffs (missed swings) and avoiding hits:
+This project analyzes two different groups for MLB Fastballs for the 2023 - 2025 seasons to determine which is more effective at generating whiffs (missed swings) and avoiding hits:
 	Fastest Pitches – pitches with the highest velocity
 	Highest Spinrate Pitches – pitches with the most spin
 
