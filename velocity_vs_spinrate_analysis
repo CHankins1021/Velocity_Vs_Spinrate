@@ -30,22 +30,41 @@ summary = pd.DataFrame({
     'Hit Rate': [fastest_hit_rate, highest_spin_hit_rate]
 })
 
-# Plot Whiff Rate Comparison
+# Plot Whiff Rate Comparison with value labels
 plt.figure(figsize=(8,6))
-plt.bar(summary['Category'], summary['Whiff Rate'])
+bars = plt.bar(summary['Category'], summary['Whiff Rate'], color=['steelblue', 'darkorange'])
 plt.title('Whiff Rate Comparison')
 plt.ylabel('Whiff Rate')
 plt.ylim(0, 1)
 plt.grid(axis='y')
+
+# Add value labels
+for bar in bars:
+    height = bar.get_height()
+    plt.text(bar.get_x() + bar.get_width()/2.0, height + 0.01, f"{height:.2%}", ha='center', va='bottom')
+
+plt.tight_layout()
 plt.show()
 
-# Plot Hit Rate Comparison
+# Plot Hit Rate Comparison with value labels and highlight the lower (better) bar
 plt.figure(figsize=(8,6))
-plt.bar(summary['Category'], summary['Hit Rate'])
+colors = ['steelblue' if hr == min(summary['Hit Rate']) else 'darkorange' for hr in summary['Hit Rate']]
+bars = plt.bar(summary['Category'], summary['Hit Rate'], color=colors)
 plt.title('Hit Rate Comparison')
 plt.ylabel('Hit Rate')
 plt.ylim(0, 1)
 plt.grid(axis='y')
+
+# Add value labels
+for bar in bars:
+    height = bar.get_height()
+    plt.text(bar.get_x() + bar.get_width()/2.0, height + 0.01, f"{height:.2%}", ha='center', va='bottom')
+
+# Highlight which category is better
+winner = summary.loc[summary['Hit Rate'].idxmin(), 'Category']
+plt.text(0.5, 0.95, f"Lower is better — {winner} has the edge", ha='center', fontsize=10, color='green', transform=plt.gca().transAxes)
+
+plt.tight_layout()
 plt.show()
 
 # Save summary to CSV
